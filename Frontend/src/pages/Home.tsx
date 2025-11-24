@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 
-// Иконки (можно заменить)
 const ScheduleIcon = () => (
     <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
         <path d="M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 2v2H5V6h14zm-7 5h5v5h-5v-5zm-2 0H5v5h5v-5zm7 7h-5v5h5v-5zm-7 0H5v5h5v-5z" />
@@ -59,22 +58,17 @@ const features = [
 export default function Home() {
     return (
         <>
-            {/* ГЕРОЙ-СЕКЦИЯ — на всю ширину */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
-                {/* Левая картинка */}
                 <div
                     className="absolute left-0 top-0 h-full w-1/2 bg-cover bg-left"
-                    style={{ backgroundImage: 'url(./dick.png)' }} // ← Твоя левая картинка
+                    style={{ backgroundImage: 'url(./dick.png)' }}
                 />
-                {/* Правая картинка */}
                 <div
                     className="absolute right-0 top-0 h-full w-1/2 bg-cover bg-right"
-                    style={{width: "50vw", backgroundImage: 'url(./right.png)' }} // ← Твоя правая картинка
+                    style={{width: "50vw", backgroundImage: 'url(./right.png)' }}
                 />
-                {/* Тёмный оверлей */}
                 <div className="absolute inset-0 bg-black/70" />
 
-                {/* Контент по центру */}
                 <div className="relative z-10 text-center px-6 max-w-3xl">
                     <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
                         Учеба с AI
@@ -91,7 +85,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* КАРТОЧКИ — в центре */}
             <section className="py-20 px-6">
                 <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
                     Успешная учёба

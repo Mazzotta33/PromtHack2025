@@ -1,7 +1,6 @@
 import {createApi} from "@reduxjs/toolkit/query/react";
 import {baseQueryWithReauth} from "./baseQueryWithReauth.ts";
 
-// Types
 export interface ExamStartRequest {
     teacher_name: string;
     subject: string;
@@ -81,7 +80,6 @@ export const examApi = createApi ({
     baseQuery: baseQueryWithReauth,
     tagTypes: ['Exam', 'Study', 'Materials'],
     endpoints: (builder)=> ({
-        // Upload audio
         uploadAudio: builder.mutation<string, File>({
             query: (file) => {
                 const formData = new FormData();
@@ -97,7 +95,6 @@ export const examApi = createApi ({
             transformResponse: (response: { url: string }) => response.url,
         }),
 
-        // Exam endpoints
         startExam: builder.mutation<QuestionResponse, ExamStartRequest>({
             query: (data) => ({
                 url: "/exam/start",
@@ -120,7 +117,6 @@ export const examApi = createApi ({
             providesTags: ['Exam'],
         }),
 
-        // Study endpoints
         startStudy: builder.mutation<StudyResponse, StudyStartRequest>({
             query: (data) => ({
                 url: "/study/start",
@@ -143,7 +139,6 @@ export const examApi = createApi ({
             providesTags: ['Study'],
         }),
 
-        // Materials endpoints
         uploadPDF: builder.mutation<PDFUploadResponse, { subject: string; file: File }>({
             query: ({ subject, file }) => {
                 const formData = new FormData();

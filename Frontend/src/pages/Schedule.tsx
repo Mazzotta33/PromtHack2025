@@ -10,11 +10,10 @@ interface Lesson {
 
 interface DaySchedule {
     day: string;
-    date: string; // Добавлено: дата в формате "17 ноября"
+    date: string;
     lessons: Lesson[];
 }
 
-// === ДАННЫЕ: даты + уроки ===
 const scheduleData: DaySchedule[] = [
     {
         day: 'Понедельник',
@@ -170,12 +169,10 @@ export default function Schedule() {
     return (
         <div className="min-h-screen bg-[#0a0a1f] text-white pt-20 px-6">
             <div className="max-w-7xl mx-auto">
-                {/* Заголовок */}
                 <h1 className="text-4xl md:text-5xl font-bold text-center mb-12">
                     Расписание занятий
                 </h1>
 
-                {/* Сетка дней */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {scheduleData.map((day) => (
                         <div
@@ -183,7 +180,6 @@ export default function Schedule() {
                             className="bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-700 rounded-3xl p-1 shadow-xl"
                         >
                             <div className="bg-[#0f0f2e] rounded-3xl p-6 h-full flex flex-col">
-                                {/* Дата и день недели */}
                                 <div className="mb-4">
                                     <h2 className="text-2xl font-bold text-white">
                                         {day.date}
@@ -191,7 +187,6 @@ export default function Schedule() {
                                     <p className="text-sm text-gray-400">{day.day}</p>
                                 </div>
 
-                                {/* Уроки */}
                                 <div className="space-y-4 flex-1">
                                     {day.lessons.length > 0 ? (
                                         day.lessons.map((lesson) => (

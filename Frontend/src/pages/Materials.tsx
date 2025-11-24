@@ -2,7 +2,6 @@ import { useState, useRef } from 'react';
 import { Upload, X, Link as LinkIcon, FileText, ArrowUpRight } from 'lucide-react';
 import { useUploadPDFMutation, useUploadPDFFromUrlMutation } from '../Redux/api/examApi.ts';
 
-// Стрелка вверх
 const ArrowIcon = () => (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5 5 5M7 17l5-5 5 5" />
@@ -91,12 +90,10 @@ export default function Materials() {
     return (
         <div className="min-h-screen bg-[#0a0a1f] text-white pt-20 px-6">
             <div className="container mx-auto max-w-7xl">
-                {/* Заголовок */}
                 <h1 className="text-4xl md:text-5xl font-bold text-center mb-10">
                     Учебные материалы
                 </h1>
 
-                {/* Поиск */}
                 <div className="relative max-w-md mx-auto mb-10">
                     <input
                         type="text"
@@ -111,9 +108,7 @@ export default function Materials() {
                     </svg>
                 </div>
 
-                {/* === Две колонки === */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* === Левая колонка: список предметов === */}
                     <div className="lg:col-span-1 space-y-3">
                         {filteredSubjects.map((subject) => (
                             <button
@@ -135,7 +130,6 @@ export default function Materials() {
                         ))}
                     </div>
 
-                    {/* === Правая колонка: материалы === */}
                     <div className="lg:col-span-2 space-y-6">
                         {selectedSubject ? (
                             <>
@@ -162,7 +156,6 @@ export default function Materials() {
                                                 key={material.id}
                                                 className="relative rounded-2xl overflow-hidden bg-[#1a1a3a] border border-cyan-500/30 shadow-lg hover:shadow-cyan-500/20 transition-all"
                                             >
-                                                {/* Фоновая картинка */}
                                                 <div
                                                     className="absolute inset-0 bg-cover bg-center"
                                                     style={{ backgroundImage: `url(${material.bgImage})` }}
@@ -200,7 +193,6 @@ export default function Materials() {
                     </div>
                 </div>
 
-                {/* Upload Modal */}
                 {showUploadModal && selectedSubject && (
                     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
                         <div className="bg-[#1a1a3a] rounded-3xl shadow-2xl max-w-md w-full p-8 border border-white/10">

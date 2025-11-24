@@ -11,17 +11,14 @@ export default function Navbar() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        // dispatch(logout()); // <-- если есть action
-        localStorage.removeItem('token'); // или sessionStorage
+        localStorage.removeItem('token');
         navigate('/login');
     };
 
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-[#0a0a1f]/80 backdrop-blur-md border-b border-white/10">
-            {/* Логотип-шарик */}
             <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-indigo-600 rounded-full shadow-lg" />
 
-            {/* Ссылки по центру */}
             <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-wider">
                 {navItems.map((item) => (
                     <NavLink
@@ -40,7 +37,6 @@ export default function Navbar() {
                 ))}
             </div>
 
-            {/* Кнопка Выход */}
             <button
                 onClick={handleLogout}
                 className="px-5 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full text-sm font-medium text-white hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 shadow-md"

@@ -30,32 +30,27 @@ export default function AIAssistant() {
     const [visualizationState, setVisualizationState] = useState<VisualizationState>('waiting');
     const [_currentAudioUrl, setCurrentAudioUrl] = useState<string | undefined>(undefined);
 
-    // Exam state
     const [examSessionId, setExamSessionId] = useState<number | null>(null);
     const [currentQuestion, setCurrentQuestion] = useState<QuestionResponse | null>(null);
     const [examMessages, setExamMessages] = useState<ExamMessage[]>([]);
     const [isRecording, setIsRecording] = useState(false);
     const [recordTime, setRecordTime] = useState(0);
 
-    // Study state
     const [studySessionId, setStudySessionId] = useState<number | null>(null);
     const [studyMessages, setStudyMessages] = useState<StudyMessage[]>([]);
     const [studyInput, setStudyInput] = useState('');
 
-    // Form state
     const [teacherName, setTeacherName] = useState('');
     const [subject, setSubject] = useState('');
     const [teacherDescription, setTeacherDescription] = useState('');
     const [materials, setMaterials] = useState<string[]>(['']);
 
-    // Refs
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
     const audioRefs = useRef<{ [key: string]: HTMLAudioElement | null }>({});
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    // RTK Query hooks
     const [uploadAudio] = useUploadAudioMutation();
     const [startExam, { isLoading: isStartingExam }] = useStartExamMutation();
     const [submitAnswer, { isLoading: isSubmittingAnswer }] = useSubmitAnswerMutation();
@@ -65,7 +60,6 @@ export default function AIAssistant() {
     const { data: studyMessagesData } = useGetStudyMessagesQuery(studySessionId!, { skip: !studySessionId, pollingInterval: studySessionId ? 2000 : 0 });
     const { data: examStatus } = useGetExamStatusQuery(examSessionId!, { skip: !examSessionId, pollingInterval: examSessionId ? 3000 : 0 });
 
-    // Sync study messages
     useEffect(() => {
         if (studyMessagesData) {
             const formatted: StudyMessage[] = studyMessagesData.map(msg => ({
@@ -78,12 +72,10 @@ export default function AIAssistant() {
         }
     }, [studyMessagesData]);
 
-    // Scroll to bottom
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [studyMessages, examMessages]);
 
-    // Timer for recording
     useEffect(() => {
         if (isRecording) {
             timerRef.current = setInterval(() => setRecordTime(prev => prev + 1), 1000);
@@ -100,7 +92,6 @@ export default function AIAssistant() {
         return `${mins > 0 ? mins + ':' : ''}${secs.toString().padStart(2, '0')}`;
     };
 
-    // === EXAM FUNCTIONS ===
     const handleStartExam = async () => {
         if (!teacherName || !subject || !teacherDescription) return alert('Заполните все поля');
         setVisualizationState('thinking');
@@ -180,7 +171,6 @@ export default function AIAssistant() {
     const stopRecording = () => { if (mediaRecorderRef.current && isRecording) mediaRecorderRef.current.stop(); setIsRecording(false); };
     const cancelRecording = () => { if (mediaRecorderRef.current && isRecording) mediaRecorderRef.current.stop(); setIsRecording(false); setRecordTime(0); };
 
-    // === STUDY FUNCTIONS ===
     const handleStartStudy = async () => {
         if (!teacherName || !subject || !teacherDescription) return alert('Заполните все поля');
         setVisualizationState('thinking');
@@ -226,7 +216,6 @@ export default function AIAssistant() {
         setMaterials(newMaterials);
     };
 
-    // === RENDER ===
     if (mode === 'select') {
         return (
             <div className="min-h-screen bg-[#0a0a1f] flex items-center justify-center p-6">
@@ -306,7 +295,6 @@ export default function AIAssistant() {
     if (mode === 'exam' && examStarted) {
         return (
             <div className="min-h-screen bg-[#0a0a1f] flex flex-col mt-15">
-                {/* Header */}
                 <div className="container mx-auto px-6 py-6">
                     <div className="flex items-center justify-between">
                         <div>
@@ -321,30 +309,15 @@ export default function AIAssistant() {
                     </div>
                 </div>
 
-                {/* Visualization */}
                 <div className="flex justify-center my-6">
                     <TeacherVisualization state={visualizationState} />
                 </div>
 
-                {/* Messages - Scrollable */}
-                <div
-                    className="flex-1 container mx-auto px-6 max-w-4xl overflow-y-auto scrollbar-hide"
-                    style={{ maxHeight: 'calc(100vh - 360px)' }} // учитываем header + viz + input
-                >
+                <div className="flex-1 container mx-auto px-6 max-w-4xl overflow-y-auto scrollbar-hide" style={{ maxHeight: 'calc(100vh - 360px)' }}>
                     <div className="space-y-4 pb-4">
                         {examMessages.map(msg => (
                             <div key={msg.id} className={`flex ${msg.type === 'question' ? 'justify-start' : 'justify-end'}`}>
-                                <div
-                                    className={`max-w-md rounded-2xl p-4 shadow-lg ${
-                                        msg.type === 'question'
-                                            ? 'bg-[#1a1a3a] border border-cyan-500/30 text-white'
-                                            : msg.type === 'answer'
-                                                ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white'
-                                                : msg.isCorrect
-                                                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
-                                                    : 'bg-gradient-to-r from-orange-500 to-red-500 text-white'
-                                    }`}
-                                >
+                                <div className={`max-w-md rounded-2xl p-4 shadow-lg ${msg.type === 'question' ? 'bg-[#1a1a3a] border border-cyan-500/30 text-white' : msg.type === 'answer' ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white' : msg.isCorrect ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' : 'bg-gradient-to-r from-orange-500 to-red-500 text-white'}`}>
                                     {msg.type === 'question' && (
                                         <div className="space-y-2">
                                             <div className="flex items-center gap-2">
@@ -353,13 +326,7 @@ export default function AIAssistant() {
                                             </div>
                                             <p>{msg.text}</p>
                                             {msg.audioUrl && (
-                                                <button
-                                                    onClick={() => {
-                                                        const audio = audioRefs.current[msg.id];
-                                                        audio?.paused ? audio.play() : audio?.pause();
-                                                    }}
-                                                    className="mt-2 p-2 bg-white/20 rounded-full hover:bg-white/30 transition"
-                                                >
+                                                <button onClick={() => { const audio = audioRefs.current[msg.id]; audio?.paused ? audio.play() : audio?.pause(); }} className="mt-2 p-2 bg-white/20 rounded-full hover:bg-white/30 transition">
                                                     {msg.isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
                                                 </button>
                                             )}
@@ -381,15 +348,14 @@ export default function AIAssistant() {
                             </div>
                         ))}
 
-                        {/* Loading */}
                         {(isSubmittingAnswer || isRecording) && (
                             <div className="flex justify-end">
                                 <div className="bg-white/10 text-white p-3 rounded-2xl">
                                     <div className="flex items-center gap-2">
                                         <div className="animate-spin rounded-full h-4 w-4 border-2 border-cyan-400 border-t-transparent"></div>
                                         <span className="text-sm">
-                    {isRecording ? `Запись: ${formatTime(recordTime)}` : 'Обработка...'}
-                  </span>
+                                            {isRecording ? `Запись: ${formatTime(recordTime)}` : 'Обработка...'}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -398,35 +364,23 @@ export default function AIAssistant() {
                     <div ref={messagesEndRef} />
                 </div>
 
-                {/* Input + Record Button - Static */}
                 <div className="container mx-auto px-6 py-4 max-w-4xl">
                     <div className="flex items-center gap-3">
                         {isRecording && (
-                            <button
-                                onClick={cancelRecording}
-                                className="p-3 rounded-full bg-white/10 hover:bg-white/20 transition"
-                            >
+                            <button onClick={cancelRecording} className="p-3 rounded-full bg-white/10 hover:bg-white/20 transition">
                                 <Trash2 className="w-5 h-5 text-red-400" />
                             </button>
                         )}
                         <div className="flex-1 text-center">
                             {isRecording && <span className="text-sm text-gray-300">Запись: {formatTime(recordTime)}</span>}
                         </div>
-                        <button
-                            onClick={isRecording ? stopRecording : startRecording}
-                            disabled={isSubmittingAnswer}
-                            className={`relative p-4 rounded-full transition-all ${
-                                isRecording
-                                    ? 'bg-red-500 animate-pulse shadow-lg'
-                                    : 'bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700'
-                            } ${isSubmittingAnswer ? 'opacity-50' : ''}`}
-                        >
+                        <button onClick={isRecording ? stopRecording : startRecording} disabled={isSubmittingAnswer} className={`relative p-4 rounded-full transition-all ${isRecording ? 'bg-red-500 animate-pulse shadow-lg' : 'bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700'} ${isSubmittingAnswer ? 'opacity-50' : ''}`}>
                             {isRecording ? (
                                 <>
                                     <MicOff className="w-6 h-6 text-white" />
                                     <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  {formatTime(recordTime)}
-                </span>
+                                        {formatTime(recordTime)}
+                                    </span>
                                 </>
                             ) : (
                                 <Mic className="w-6 h-6 text-white" />
@@ -441,46 +395,27 @@ export default function AIAssistant() {
     if (mode === 'study' && studyStarted) {
         return (
             <div className="min-h-screen bg-[#0a0a1f] flex flex-col mt-15">
-                {/* Header */}
                 <div className="container mx-auto px-6 py-6">
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="text-3xl font-bold text-white">Подготовка к экзамену</h1>
                             <p className="text-gray-400">{subject} - {teacherName}</p>
                         </div>
-                        <button
-                            onClick={() => {
-                                setMode('select');
-                                setStudyStarted(false);
-                                setStudySessionId(null);
-                            }}
-                            className="p-2 hover:bg-white/10 rounded-full transition"
-                        >
+                        <button onClick={() => { setMode('select'); setStudyStarted(false); setStudySessionId(null); }} className="p-2 hover:bg-white/10 rounded-full transition">
                             <X className="w-5 h-5 text-gray-400" />
                         </button>
                     </div>
                 </div>
 
-                {/* Visualization */}
                 <div className="flex justify-center my-6">
                     <TeacherVisualization state={visualizationState} />
                 </div>
 
-                {/* Messages */}
-                <div
-                    className="flex-1 container mx-auto px-6 max-w-4xl overflow-y-auto scrollbar-hide"
-                    style={{ maxHeight: 'calc(100vh - 360px)' }}
-                >
+                <div className="flex-1 container mx-auto px-6 max-w-4xl overflow-y-auto scrollbar-hide" style={{ maxHeight: 'calc(100vh - 360px)' }}>
                     <div className="space-y-4 pb-4">
                         {studyMessages.map(msg => (
                             <div key={msg.id} className={`flex ${msg.isFromStudent ? 'justify-end' : 'justify-start'}`}>
-                                <div
-                                    className={`max-w-md rounded-2xl p-4 shadow-lg ${
-                                        msg.isFromStudent
-                                            ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white'
-                                            : 'bg-[#1a1a3a] border border-cyan-500/30 text-white'
-                                    }`}
-                                >
+                                <div className={`max-w-md rounded-2xl p-4 shadow-lg ${msg.isFromStudent ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white' : 'bg-[#1a1a3a] border border-cyan-500/30 text-white'}`}>
                                     <p className="whitespace-pre-wrap">{msg.text}</p>
                                     <div className="text-xs opacity-70 mt-2">{msg.timestamp.toLocaleTimeString()}</div>
                                 </div>
@@ -500,7 +435,6 @@ export default function AIAssistant() {
                     </div>
                 </div>
 
-                {/* Input */}
                 <div className="container mx-auto px-6 py-4 max-w-4xl">
                     <div className="flex items-center gap-3">
                         <input
@@ -517,11 +451,7 @@ export default function AIAssistant() {
                             className="flex-1 px-4 py-3 bg-white/10 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-400 placeholder-gray-400"
                             disabled={isSendingMessage}
                         />
-                        <button
-                            onClick={handleSendStudyMessage}
-                            disabled={!studyInput.trim() || isSendingMessage}
-                            className="p-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full hover:shadow-lg transition-all disabled:opacity-50"
-                        >
+                        <button onClick={handleSendStudyMessage} disabled={!studyInput.trim() || isSendingMessage} className="p-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full hover:shadow-lg transition-all disabled:opacity-50">
                             <Send className="w-5 h-5" />
                         </button>
                     </div>

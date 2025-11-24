@@ -32,14 +32,10 @@ export default function Login() {
                 backgroundPosition: 'center',
             }}
         >
-            {/* Центральная карточка */}
             <div className="bg-black/70 backdrop-blur-xl rounded-[36px] p-10 w-full max-w-md shadow-2xl border border-white/10">
-                {/* Заголовок */}
                 <h1 className="text-3xl font-bold text-white text-center mb-10">Вход</h1>
 
-                {/* Форма */}
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Почта */}
                     <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">Почта</label>
                         <input
@@ -52,7 +48,6 @@ export default function Login() {
                         />
                     </div>
 
-                    {/* Пароль */}
                     <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">Пароль</label>
                         <input
@@ -65,7 +60,6 @@ export default function Login() {
                         />
                     </div>
 
-                    {/* Кнопка */}
                     <button
                         type="submit"
                         disabled={isLoading}
@@ -74,7 +68,6 @@ export default function Login() {
                         {isLoading ? 'Вход...' : 'ВОЙТИ'}
                     </button>
 
-                    {/* Ссылка */}
                     <div className="text-center mt-6">
                         <Link
                             to="/"

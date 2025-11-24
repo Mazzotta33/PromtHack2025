@@ -51,7 +51,6 @@ export default function Registration() {
                 <h1 className="text-2xl font-bold text-white text-center mb-6">Регистрация</h1>
 
                 <form onSubmit={handleSubmit} className="space-y-3">
-                    {/* ФИО */}
                     <div>
                         <label className="block text-xs font-medium text-gray-300 mb-1">ФИО</label>
                         <input
@@ -64,7 +63,6 @@ export default function Registration() {
                         />
                     </div>
 
-                    {/* Почта */}
                     <div>
                         <label className="block text-xs font-medium text-gray-300 mb-1">Почта</label>
                         <input
@@ -77,7 +75,6 @@ export default function Registration() {
                         />
                     </div>
 
-                    {/* Пароль */}
                     <div>
                         <label className="block text-xs font-medium text-gray-300 mb-1">Пароль</label>
                         <input
@@ -90,7 +87,6 @@ export default function Registration() {
                         />
                     </div>
 
-                    {/* ВУЗ */}
                     <div>
                         <label className="block text-xs font-medium text-gray-300 mb-1">ВУЗ</label>
                         <input
@@ -103,7 +99,6 @@ export default function Registration() {
                         />
                     </div>
 
-                    {/* Направление */}
                     <div>
                         <label className="block text-xs font-medium text-gray-300 mb-1">Направление</label>
                         <input
@@ -116,7 +111,6 @@ export default function Registration() {
                         />
                     </div>
 
-                    {/* Курс */}
                     <div>
                         <label className="block text-xs font-medium text-gray-300 mb-1">Курс</label>
                         <select
@@ -132,7 +126,6 @@ export default function Registration() {
                         </select>
                     </div>
 
-                    {/* Группа */}
                     <div>
                         <label className="block text-xs font-medium text-gray-300 mb-1">Группа</label>
                         <input
@@ -145,7 +138,6 @@ export default function Registration() {
                         />
                     </div>
 
-                    {/* Уровень */}
                     <div>
                         <label className="block text-xs font-medium text-gray-300 mb-1">Уровень</label>
                         <div className="flex gap-4 text-sm text-white">
@@ -160,7 +152,6 @@ export default function Registration() {
                         </div>
                     </div>
 
-                    {/* День рождения */}
                     <div>
                         <label className="block text-xs font-medium text-gray-300 mb-1">ДР</label>
                         <input
@@ -172,7 +163,6 @@ export default function Registration() {
                         />
                     </div>
 
-                    {/* Кнопка */}
                     <button
                         type="submit"
                         disabled={isLoading}
@@ -181,7 +171,6 @@ export default function Registration() {
                         {isLoading ? 'Создание...' : 'СОЗДАТЬ'}
                     </button>
 
-                    {/* Ссылка */}
                     <div className="text-center text-xs text-gray-400 mt-3">
                         Есть аккаунт?{" "}
                         <Link to="/login" className="text-white hover:underline underline-offset-2 font-medium">
